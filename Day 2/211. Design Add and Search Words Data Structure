@@ -1,0 +1,80 @@
+class WordDictionary {
+    class Node{
+        char cc;
+        HashMap<Character, Node> children;
+        boolean isTerminal;
+        Node(char cc, boolean isTerminal){
+            this.cc = cc;
+            this.isTerminal = isTerminal;
+            this.children = new HashMap<>();
+        }
+    }
+    Node head;
+    int numWords;
+    public WordDictionary() {
+        head = new Node('\0', false);
+        numWords = 0;
+    }
+    
+    public void addWord(String word) {
+        this.addWord(head, word);
+    }
+
+    public void addWord(Node parent, String word){
+        if(word.length() == 0){
+            if(parent.isTerminal){
+                //word already exists
+            }else{
+                parent.isTerminal = true;
+                numWords++;
+            }
+            return;
+        }
+        char cc = word.charAt(0);
+        String ros = word.substring(1);
+        Node child = parent.children.get(cc);
+        if(child == null){
+            child = new Node(cc, false);
+            parent.children.put(cc, child);
+        }
+        this.addWord(child, ros);
+    }
+    
+    public boolean search(String word) {
+        return this.search(head, word);
+    }
+
+    public boolean search(Node parent, String word){
+        if(word.length() == 0){
+            if(parent.isTerminal){
+                return true;
+            }
+            return false;
+        }
+        char cc = word.charAt(0);
+        String ros = word.substring(1);
+        
+        if(cc == '.'){
+            HashMap<Character, Node> children = parent.children;
+            for(Map.Entry child : children.entrySet()){
+                if(this.search((Node)child.getValue(), ros))
+                    return true;
+            }
+            return false;
+        }else{
+            Node child = parent.children.get(cc);
+            if(child == null){
+                return false;
+            }
+            return this.search(child, ros);   
+        }
+        
+    }
+}
+
+/**
+ * Your WordDictionary object will be instantiated and called as such:
+ * WordDictionary obj = new WordDictionary();
+ * obj.addWord(word);
+ * boolean param_2 = obj.search(word);
+ */
