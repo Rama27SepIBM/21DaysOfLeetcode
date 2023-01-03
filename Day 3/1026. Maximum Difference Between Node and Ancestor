@@ -1,0 +1,52 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    int maxDiff;
+    public int maxAncestorDiff(TreeNode root) {
+        maxDiff = Integer.MIN_VALUE;
+        List<Integer> values = new ArrayList<>();
+        values.add(root.val);
+        maxAncestorDiff(root, values);
+        return maxDiff;
+    }
+    public void maxAncestorDiff(TreeNode root, List<Integer> values){
+        if(root.left == null && root.right == null){
+            updateMaxDiff(values);
+            return;
+        }
+        if(root.left != null){
+            values.add(root.left.val);
+            maxAncestorDiff(root.left, values);
+            values.remove(values.size() - 1);
+        }
+        if(root.right != null){
+            values.add(root.right.val);
+            maxAncestorDiff(root.right, values);
+            values.remove(values.size() - 1);
+        }
+    }
+    public void updateMaxDiff(List<Integer> values){
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
+        for(int v : values){
+            if(v < min)
+                min = v;
+            if(v > max)
+                max = v;
+        }
+        maxDiff = Math.max(maxDiff, max - min);
+    }
+}
