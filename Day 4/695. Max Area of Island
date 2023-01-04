@@ -1,0 +1,31 @@
+class Solution {
+    int area;
+    int[][] directions = {{-1,0}, {0, -1}, {1,0}, {0,1}};
+    public int maxAreaOfIsland(int[][] grid) {
+        boolean[][] visited = new boolean[grid.length][grid[0].length];
+        
+        int maxArea = 0;
+        for(int i = 0; i < grid.length; i++){
+            for(int j = 0; j < grid[0].length; j++){
+                if(visited[i][j] == false && grid[i][j] == 1){
+                    area = 0;
+                    maxAreaOfIsland(i, j, grid, visited);
+                    maxArea = Math.max(maxArea, area);
+                }
+            }
+        }
+        return maxArea;
+    }
+    public void maxAreaOfIsland(int r, int c, int[][] grid, boolean[][] visited){
+        if(r < 0 || c < 0 || r > grid.length - 1 || c > grid[0].length - 1 || visited[r][c] == true || grid[r][c] == 0){
+            return;
+        }
+        visited[r][c] = true;
+        area++;
+        for(int d = 0; d < directions.length; d++){
+            int row = r + directions[d][0];
+            int col = c + directions[d][1];
+            maxAreaOfIsland(row, col, grid, visited);
+        }
+    }
+}
