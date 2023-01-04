@@ -1,0 +1,26 @@
+class Solution {
+    public int minimumRounds(int[] tasks) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        
+        for(int task : tasks){
+            map.put(task, map.getOrDefault(task, 0) + 1);
+        }
+        int count = 0;
+        for(int value : map.values()){
+            //if freq of a task is one
+            if(value == 1)
+                return -1;
+            //if freq is multiple of 3
+            if(value % 3 == 0){
+                count += value / 3;
+            }else{
+                /*
+                Case 1: if value % 3 = 1; (value / 3 - 1) groups and 2 pairs;
+                Case 2: if value % 3 = 2; (value / 3) groups and 1 pair
+                */
+                count += value / 3 + 1;
+            }
+        }
+        return count;
+    }
+}
