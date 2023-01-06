@@ -1,0 +1,49 @@
+class Solution {
+    public int shipWithinDays(int[] weights, int days) {
+        int left = max(weights);
+        int right = sum(weights);
+        
+        while(left < right){
+            int mid = left + (right - left) / 2;
+            if(condition(weights, mid, days))
+                right = mid;
+            else
+                left = mid + 1;
+        }
+        return left;
+    }
+    public boolean condition(int[] weights, int capacity, int D){
+        int days = 1;
+        int sum = weights[0];
+        for(int i = 1; i < weights.length; i++){
+            sum += weights[i];
+            if(sum > capacity){
+                sum = weights[i];
+                days++;
+            }
+            if(days > D)
+                return false;
+        }
+        return true;
+    }
+    public int max(int[] weights){
+        int maxValue = Integer.MIN_VALUE;
+        for(int i = 0; i < weights.length; i++){
+            maxValue = Math.max(maxValue, weights[i]);
+        }
+        return maxValue;
+    }
+    public int sum(int[] weights){
+        int sum = 0;
+        for(int i = 0; i < weights.length; i++){
+            sum += weights[i];
+        }
+        return sum;
+    }
+}
+
+/*
+TIme Complexity: O(n log n)
+Space Complexity: O(1)
+
+*/
