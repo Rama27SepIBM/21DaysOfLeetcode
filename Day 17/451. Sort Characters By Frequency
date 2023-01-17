@@ -1,0 +1,29 @@
+class Solution {
+    public String frequencySort(String s) {
+        HashMap<Character, Integer> freqMap = new HashMap<>();
+        
+        for(char cc : s.toCharArray()){
+            freqMap.put(cc, freqMap.getOrDefault(cc, 0) + 1);
+        }
+        
+        PriorityQueue<Character> pq = new PriorityQueue<>(
+            (a, b) -> {
+                return freqMap.get(b) - freqMap.get(a);
+            }
+        );
+        
+        for(Character cc : freqMap.keySet()){
+            pq.add(cc);
+        }
+        StringBuilder sb = new StringBuilder();
+        while(!pq.isEmpty()){
+            char rc = (char)pq.remove();
+            int freq = freqMap.get(rc);
+            
+            while(freq-- > 0){
+                sb.append(rc);
+            }
+        }
+        return sb.toString();
+    }
+}
