@@ -1,0 +1,24 @@
+class Solution {
+    public int[] topKFrequent(int[] nums, int k) {
+        HashMap<Integer, Integer> freqMap = new HashMap<>();
+        for(int num : nums){
+            freqMap.put(num, freqMap.getOrDefault(num, 0) + 1);
+        }
+        PriorityQueue<Integer> queue = new PriorityQueue<>(
+            (a, b) -> {
+                return freqMap.get(a) - freqMap.get(b);
+            }
+        );
+        for(Map.Entry entry : freqMap.entrySet()){
+            queue.add((int)entry.getKey());
+            if(queue.size() > k)
+                queue.remove();
+        }
+        int[] topKFrequent = new int[k];
+        int i = 0;
+        while(!queue.isEmpty()){
+            topKFrequent[i++] = (int)queue.remove(); 
+        }
+        return topKFrequent;
+    }
+}
