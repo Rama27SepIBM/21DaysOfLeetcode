@@ -1,0 +1,30 @@
+class Solution {
+    public int countQuadruplets(int[] nums) {
+        int count = 0;
+        int n = nums.length;
+        HashMap<Integer, Integer> map = new HashMap<>();
+        map.put(nums[n - 1] - nums[n - 2], 1);
+        
+        for(int second = n - 3; second >= 1; second--){
+            for(int first = second - 1; first >= 0; first--){
+                count += map.getOrDefault(nums[first] + nums[second], 0);
+            }
+            for(int d = nums.length - 1; d >= second; d--){
+                int diff = nums[d] - nums[second];
+                map.put(diff, map.getOrDefault(diff, 0) + 1);
+            }
+        }
+        return count;
+    }
+}
+/*
+😊
+b = 1
+a = 0
+[1,1,1,3,5]
+len = 5
+res = 0 + 1 + 1 + 2
+
+count = {2, 3}, {4, 2}, {0, 1}
+
+*/
